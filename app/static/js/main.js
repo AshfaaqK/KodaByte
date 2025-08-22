@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Generate static stars
+    // =========================
+    // STARFIELD + SHOOTING STARS
+    // =========================
     function createStarfield(numStars = 120) {
         const container = document.querySelector(".starfield");
         for (let i = 0; i < numStars; i++) {
@@ -13,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
             star.style.left = x + "px";
             container.appendChild(star);
 
-            // Twinkle effect
+            // Twinkle
             gsap.to(star, {
                 opacity: Math.random(),
                 duration: Math.random() * 2 + 1,
@@ -23,11 +25,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 delay: Math.random() * 2
             });
 
-            // Parallax drift (tiny movement loop)
+            // Parallax drift
             gsap.to(star, {
-                x: "+=" + (Math.random() * 20 - 10), // drift left or right
-                y: "+=" + (Math.random() * 20 - 10), // drift up or down
-                duration: Math.random() * 10 + 15,   // very slow
+                x: "+=" + (Math.random() * 20 - 10),
+                y: "+=" + (Math.random() * 20 - 10),
+                duration: Math.random() * 10 + 15,
                 repeat: -1,
                 yoyo: true,
                 ease: "sine.inOut"
@@ -35,8 +37,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-
-    // Shooting stars
     function createShootingStar() {
         const star = document.createElement("div");
         star.classList.add("shooting-star");
@@ -55,20 +55,22 @@ document.addEventListener("DOMContentLoaded", function () {
         );
     }
 
-    // Init
+    // Init starfield
     createStarfield(120);
 
-    // Shooting stars randomly
+    // Shooting stars
     setInterval(() => {
         if (Math.random() > 0.2) { // 80% chance per second
             createShootingStar();
         }
     }, 150);
 
-
+    // =========================
+    // HERO LOGO + SUBTITLE
+    // =========================
     const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-    // Step 1: Pop in K
+    // Pop in K
     tl.from(".k", {
         opacity: 0,
         scale: 0,
@@ -76,19 +78,19 @@ document.addEventListener("DOMContentLoaded", function () {
         ease: "back.out(1.7)"
     });
 
-    // Step 2: Slide out "odaByte"
+    // Slide out "odaByte"
     tl.to(".rest", {
         width: "auto",
         duration: 1,
     }, "+=0.2");
 
-    // Step 3: Push logo up slightly
+    // Push logo up slightly
     tl.to(".logo", {
         y: "-30px",
         duration: 0.5
     }, ">");
 
-    // Step 4: Start typing subtitle after logo animation
+    // Start typing subtitle
     tl.to({}, {
         duration: 0.2,
         onComplete: typeSubtitle
@@ -98,13 +100,11 @@ document.addEventListener("DOMContentLoaded", function () {
         const subtitleEl = document.getElementById("subtitle-text");
         const cursorEl = document.getElementById("cursor");
         const subtitleText = "Designing responsive, high-performance websites that bring your vision to life online.";
-        subtitleEl.textContent = ""; // clear container
-
-        // Show cursor when typing starts
+        subtitleEl.textContent = "";
         cursorEl.style.visibility = "visible";
 
         let index = 0;
-        const typingSpeed = 40; // ms per character
+        const typingSpeed = 40;
 
         const typeInterval = setInterval(() => {
             subtitleEl.textContent += subtitleText[index];
@@ -113,8 +113,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }, typingSpeed);
     }
 
-    // About section animations
-
+    // =========================
+    // BACKGROUND GRADIENT SCROLL
+    // =========================
     gsap.registerPlugin(ScrollTrigger);
 
     const gradients = [
@@ -134,4 +135,59 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    // =========================
+    // ABOUT SECTION ANIMATIONS
+    // =========================
+    gsap.from(".about-image img", {
+        scrollTrigger: {
+            trigger: "#about",
+            start: "top 80%",
+        },
+        y: 80,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out"
+    });
+
+    gsap.from(".about-text", {
+        scrollTrigger: {
+            trigger: "#about",
+            start: "top 80%",
+        },
+        x: 80,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out",
+        delay: 0.2
+    });
+
+    // Count-up stats (Years + Projects)
+    const counters = document.querySelectorAll(".counter");
+    counters.forEach(counter => {
+        let target = +counter.dataset.target;
+        ScrollTrigger.create({
+            trigger: counter,
+            start: "top 80%",
+            onEnter: () => {
+                gsap.fromTo(counter, { innerText: 0 }, {
+                    innerText: target,
+                    duration: 2,
+                    snap: { innerText: 1 }
+                });
+            }
+        });
+    });
+
+    // Star rating
+    gsap.to(".stars i", {
+        scrollTrigger: {
+            trigger: ".stars",
+            start: "top 80%",
+        },
+        opacity: 100,
+        scale: 0.7,
+        duration: 0.7,
+        stagger: 0.3,
+        ease: "back.out(1.7)"
+    });
 });
