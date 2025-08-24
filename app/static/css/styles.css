@@ -1,11 +1,13 @@
 /* Page background */
 
-body {
+html, body {
   margin: 0;
   font-family: sans-serif;
   min-height: 100vh;
   background: linear-gradient(135deg, #0e152e, #11265f, #0e152e);
   transition: background 0.5s ease; /* fallback */
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 .panel {
@@ -171,6 +173,10 @@ body {
 
 .image-wrapper {
   position: relative;
+}
+
+.about-exp {
+  font-size: medium;
 }
 
 .btn-gradient {
