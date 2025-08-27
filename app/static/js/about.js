@@ -54,4 +54,23 @@ document.addEventListener("DOMContentLoaded", function () {
         stagger: 0.3,
         ease: "back.out(1.7)"
     });
+
+    gsap.utils.toArray("#about .cloud").forEach((cloud, i) => {
+        const depth = (i % 2 === 0) ? 0.6 : 1; // alternate depth by index
+
+        gsap.to(cloud, {
+            scrollTrigger: {
+                trigger: "#about",
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true,
+            },
+            x: () => {
+                const screenFactor = window.innerWidth < 768 ? 0.5 : 1; // move less on mobile
+                return window.innerWidth * depth * screenFactor + 50;
+            },
+            ease: "none"
+        });
+    });
+
 });
